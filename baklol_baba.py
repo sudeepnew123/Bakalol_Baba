@@ -3,6 +3,7 @@ from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filte
 import random
 import os
 
+# Funny replies
 baklol_lines = [
     "Beta, zindagi ek golgappa hai... kabhi teekha, kabhi meetha!",
     "Jo soya, woh roya... aur jo padha, woh bhi roya.",
@@ -52,28 +53,46 @@ breakup_lines = [
     "Rishte toot gaye, par memes ab bhi strong hai.",
 ]
 
-async def auto_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = random.choice(baklol_lines)
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=text)
-
+# Command-based mentions
 async def cmd_baklol(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=random.choice(baklol_lines))
+    # Mention the user in the response
+    if update.message.from_user.username:
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id, 
+            text=f"@{update.message.from_user.username} {random.choice(baklol_lines)}", 
+            parse_mode="Markdown"
+        )
 
 async def cmd_gyan(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Baklol Baba bolte hain:\n{random.choice(gyan_lines)}")
+    # Mention the user in the response
+    if update.message.from_user.username:
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id, 
+            text=f"@{update.message.from_user.username} Baklol Baba bolte hain:\n{random.choice(gyan_lines)}", 
+            parse_mode="Markdown"
+        )
 
 async def cmd_sad(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=random.choice(sad_lines))
+    # Mention the user in the response
+    if update.message.from_user.username:
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id, 
+            text=f"@{update.message.from_user.username} {random.choice(sad_lines)}", 
+            parse_mode="Markdown"
+        )
 
 async def cmd_breakup(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=random.choice(breakup_lines))
+    # Mention the user in the response
+    if update.message.from_user.username:
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id, 
+            text=f"@{update.message.from_user.username} {random.choice(breakup_lines)}", 
+            parse_mode="Markdown"
+        )
 
 def main():
     TOKEN = os.getenv("BOT_TOKEN")
     app = ApplicationBuilder().token(TOKEN).build()
-
-    # Auto-reply for every text message (excluding commands)
-    app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), auto_reply))
 
     # Commands
     app.add_handler(CommandHandler("baklol", cmd_baklol))
